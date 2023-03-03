@@ -33,7 +33,7 @@ IE6600-final-project
 
 2. Clone this repository to your local directory:
 
-    `git clone git@github.com:gregdurrett/fp-dataset-artifacts.git`
+    
 
 3. Go over the project instructions in the pdf:
 
