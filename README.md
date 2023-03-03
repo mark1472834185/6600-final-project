@@ -19,7 +19,7 @@ IE6600-final-project
 |   \---www
 |       +---figures # put your figures here if necessary
 |       \---functions # put your created functions 
-\---*slides # you may create one folder to store your presentation materials
+\---slides # you may store your presentation materials here
 ```
 
 ## Getting Started
