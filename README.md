@@ -18,7 +18,7 @@ IE6600-final-project
 |   \---www
 |       +---figures # put your figures here if necessary
 |       \---functions # put your created functions 
-\---slides # put your presentation slides, and other related materials here
+\---*slides # you may create one folder to store your presentation materials
 ```
 
 ## Getting Started
@@ -45,7 +45,7 @@ IE6600-final-project
 ## Submit Your Work on Github
 Upon the completion of the RShiny app development, each team member should upload the team project folder to their individual github repo.
 
-If the dataset is too large, just put the dataset link in the README.md. 
+Do not include the dataset, just put the dataset link in the README.md. 
 
 ## Deploy Your Work on shinyapps.io
 
