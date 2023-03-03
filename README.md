@@ -9,7 +9,8 @@ The purpose of the project is to apply the knowledge learned in the class to rea
 ```R
 IE6600-final-project
 |   README.md # you may have your project introduction here
-|   
+|   project_guideline.pdf
+|
 +---shinyApp
 |   |   global.R # global settings
 |   |   server.R # server
