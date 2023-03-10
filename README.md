@@ -37,7 +37,7 @@ IE6600-final-project
 
 3. Go over the project instructions in the pdf:
 
-    <a href="https://zhenyuanlu.com/courses/projects/final_project_guideline.pdf" target="_blank">RShiny Project Instruction</a>
+    <a href="https://github.com/zhenyuanlu/IE6600-final-project/blob/main/project_guideline.pdf" target="_blank">RShiny Project Instruction</a>
 
 4. You can start to develop the web app in the shinyApp folder now.
 
