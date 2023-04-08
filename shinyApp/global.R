@@ -1,6 +1,7 @@
 # global settings ----
 library(shiny)
 library(tidyverse)
+library(leaflet)
 
 
 source("ui.R")
