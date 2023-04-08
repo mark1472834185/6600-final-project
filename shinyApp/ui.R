@@ -2,6 +2,7 @@
 library(DT)
 library(shiny)
 library(tidyverse)
+library(leaflet)
 
 # Define the Shiny app UI
 ui1 <- fluidPage(

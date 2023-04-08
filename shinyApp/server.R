@@ -1,7 +1,7 @@
 # server ----
 library(shiny)
 library(tidyverse)
-
+library(leaflet)
 
 server1 <- function(input, output) {
   # Reactive values ----
@@ -74,7 +74,7 @@ server1 <- function(input, output) {
         addTiles() %>%
         fitBounds(lng1 = -180, lat1 = -90, lng2 = 180, lat2 = 90)
     }
-  }),
+  })
   
   # Observe the updates of the selected columns ----
   observeEvent(input$observationInput1, {
