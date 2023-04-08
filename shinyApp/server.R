@@ -30,6 +30,52 @@ server1 <- function(input, output) {
     }
   })
   
+  #Revise1 add interactive map into
+  cities <- data.frame(
+    region = c("North America", "Europe", "Asia", "Oceania", "South America", "Africa")
+  )
+  
+  # Filter the data based on the user input
+  filtered_cities <- reactive({
+    if (input$region == "All") {
+      cities
+    } else {
+      cities[cities$region == input$region, ]
+    }
+  })
+  
+  output$map <- renderLeaflet({
+    if (input$region == "Europe") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = -10, lat1 = 34, lng2 = 30, lat2 = 60)
+    } else if (input$region == "North America") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = -128, lat1 = 24, lng2 = -56, lat2 = 50)
+    } else if (input$region == "Asia") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = 80, lat1 = -10, lng2 = 150, lat2 = 45)
+    } else if (input$region == "Oceania") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = 112, lat1 = -47, lng2 = 180, lat2 = -10)
+    } else if (input$region == "South America") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = -75, lat1 = -45, lng2 = -50, lat2 = 5)
+    } else if (input$region == "Africa") {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = -20, lat1 = -35, lng2 = 45, lat2 = 30)
+    } else {
+      leaflet(data = filtered_cities()) %>%
+        addTiles() %>%
+        fitBounds(lng1 = -180, lat1 = -90, lng2 = 180, lat2 = 90)
+    }
+  }),
+  
   # Observe the updates of the selected columns ----
   observeEvent(input$observationInput1, {
     # Save the selected column/s to values$plot.df ----

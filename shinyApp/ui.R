@@ -37,8 +37,11 @@ ui1 <- fluidPage(
                   step = 1, animate = TRUE),
       
       # Checkboxes for selecting regions
-      checkboxGroupInput("regions", "Select Regions:",
-                         choices = c("Global", "Asia", "Africa", "America", "Europe", "Oceania")),
+      #Revise1 add South America
+      #Revise2 change to the radio button
+       radioButtons("region", "Select Region:",
+               choices = c("All", "Europe", "North America", "Asia", "Oceania", "South America", "Africa")),
+       leafletOutput("map"),
       
       # Radio buttons for selecting capital type
       radioButtons("capitalType", "Select Capital Type:",
