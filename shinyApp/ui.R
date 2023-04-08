@@ -4,7 +4,7 @@ library(shiny)
 library(tidyverse)
 
 # Define the Shiny app UI
-ui <- fluidPage(
+ui1 <- fluidPage(
   # App title
   titlePanel("Total Wealth Analysis by Country"),
   
