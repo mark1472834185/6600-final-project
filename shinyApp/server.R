@@ -3,7 +3,7 @@ library(shiny)
 library(tidyverse)
 
 
-server <- function(input, output) {
+server1 <- function(input, output) {
   # Reactive values ----
   values <- reactiveValues(tbl = NULL,
                            obsList = NULL,
