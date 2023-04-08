@@ -38,7 +38,7 @@ ui1 <- fluidPage(
       
       # Checkboxes for selecting regions
       checkboxGroupInput("regions", "Select Regions:",
-                         choices = c("Global", "Asia", "Africa", "America", "Europe", "Australia")),
+                         choices = c("Global", "Asia", "Africa", "America", "Europe", "Oceania")),
       
       # Radio buttons for selecting capital type
       radioButtons("capitalType", "Select Capital Type:",
