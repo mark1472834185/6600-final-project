@@ -40,30 +40,18 @@ ui1 <- fluidPage(
       # Checkboxes for selecting regions
       #Revise1 add South America
       #Revise2 change to the radio button
-       radioButtons("region", "Select Region:",
+       radioButtons("continent", "Select continent:",
                choices = c("All", "Europe", "North America", "Asia", "Oceania", "South America", "Africa")),
        leafletOutput("map"),
       
-      # Radio buttons for selecting capital type
-      radioButtons("capitalType", "Select Capital Type:",
-                   choices = c("Human Capital", "Natural Capital"),
-                   selected = "Human Capital"),
-      
-      # Conditional panels for sub-options
-      conditionalPanel(
-        condition = "input.capitalType == 'Human Capital'",
-        selectInput("humanCapitalType", "Select Human Capital Type:",
-                    choices = c("Human Capital", "Human Capital per capita", "Human capital per capita, female", 
-                                "Human capital per capita, male", "Human capital, female", "Human capital, male"))
-      ),
-      conditionalPanel(
-        condition = "input.capitalType == 'Natural Capital'",
-        selectInput("naturalCapitalType", "Select Natural Capital Type:",
-                    choices = c("Natural Capital", "Natural capital, agricultural land", "Natural capital, fisheries", 
-                                "Natural capital, forests: ecosystem services", "Natural capital, forests: timber", "Natural capital, fossil fuels", 
-                                "Natural capital, nonrenewable assets: coal", "Natural capital, nonrenewable assets: gas", "Natural capital, nonrenewable assets: minerals", 
-                                "Natural capital, nonrenewable assets: oil", "Natural capital, renewable"))
-      ),
+      # Select input for selecting capital type
+      selectInput("capitalType", "Select Capital Type:",
+                  choices = c("Human Capital", "Human Capital per capita", "Human capital per capita, female", 
+                              "Human capital per capita, male", "Human capital, female", "Human capital, male", "Natural Capital", 
+                              "Natural capital, agricultural land", "Natural capital, fisheries", "Natural capital, forests: ecosystem services", 
+                              "Natural capital, forests: timber", "Natural capital, fossil fuels", "Natural capital, nonrenewable assets: coal", 
+                              "Natural capital, nonrenewable assets: gas", "Natural capital, nonrenewable assets: minerals", "Natural capital, nonrenewable assets: oil", 
+                              "Natural capital, renewable")),
       
       # Action button to apply changes
       actionButton("applyChanges", "Apply Changes")
