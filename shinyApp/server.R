@@ -8,41 +8,48 @@ library(ggplot2)
 
 # Define the Shiny app server
 server1 <- function(input, output, session) {
-  data <- read.csv("~/GitHub/IE-6600-final-project/shinyApp/www/data/revised_data.csv")
+  data <- read_csv("~/GitHub/IE-6600-final-project/shinyApp/www/data/revised_data.csv")
   data$capitalType <- gsub(" \\(constant 2018 US\\$\\)","",data$capitalType)
-  
-  observeEvent(input$applyChanges, {
-    req(input$yearRange, input$regions, input$capitalType)
     
-    # Prepare the data for filtering
-    df <- data
+    filtered_data <- reactiveVal()
     
-    # Remove non-numeric characters from the Total_USD column
-    df$Total_USD <- gsub("[^0-9.]", "", df$Total_USD)
-    
-    # Convert the Total_USD column to numeric
-    df$Total_USD <- as.numeric(as.character(df$Total_USD))
-    
-    # Replace NAs with 0 in the Total_USD column
-    df$Total_USD[is.na(df$Total_USD)] <- 0
-    
-    # Filter data based on selected year range
-    df <- df %>%
-      filter(Year >= input$yearRange[1] & Year <= input$yearRange[2])
-    
-    # Filter data based on selected regions
-    if (!"Global" %in% input$regions) {
+    observeEvent(input$applyChanges, {
+      req(input$yearRange, input$continent, input$capitalType)
+      
+      # Prepare the data for filtering
+      df <- data
+      
+      # Remove non-numeric characters from the Total_USD column
+      df$Total_USD <- gsub("[^0-9.]", "", df$Total_USD)
+      
+      # Convert the Total_USD column to numeric
+      df$Total_USD <- as.numeric(as.character(df$Total_USD))
+      
+      # Replace NAs with 0 in the Total_USD column
+      df$Total_USD[is.na(df$Total_USD)] <- 0
+      
+      # Filter data based on selected year range
       df <- df %>%
-        filter(Continent %in% input$regions)
-    }
+        filter(Year >= input$yearRange[1] & Year <= input$yearRange[2])
+      
+      # Filter data based on selected regions
+      if (input$continent != "All") {
+        df <- df %>%
+          filter(Continent == input$continent)
+      }
+      
+      # Filter data based on selected capital type
+      df <- df %>%
+        filter(capitalType == input$capitalType)
+      
+      filtered_data(df)
+    })
     
-    # Filter data based on selected capital type
-    df <- df %>%
-      filter(capitalType == input$capitalType)
-    
-    output$barChart <- renderPlot({
+    output$histogram <- renderPlot({
+      req(filtered_data())
+      
       # Aggregate data by country and sum the USD values
-      aggregated_data <- df %>%
+      aggregated_data <- filtered_data() %>%
         group_by(Country.Name) %>%
         summarise(Total_USD = sum(Total_USD, na.rm = TRUE)) %>%
         arrange(desc(Total_USD)) %>%
@@ -57,7 +64,7 @@ server1 <- function(input, output, session) {
       
       print(p)
     })
-  })
+  
 
 
   
