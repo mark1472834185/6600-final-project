@@ -2,33 +2,65 @@
 library(shiny)
 library(tidyverse)
 library(leaflet)
+library(dplyr)
+library(ggplot2)
 
+# Define the Shiny app server
 server1 <- function(input, output) {
-  # Reactive values ----
-  values <- reactiveValues(tbl = NULL,
-                           obsList = NULL,
-                           plot.df = NULL,
-                           # For feature BIN ----
-                           bins = NULL)
   
-  # Observe any updates from the dataset selection ----
-  observeEvent(input$dbList1, {
-    # Function IF will prevent to show error/warning messages on the blank screen ----
-    if (!NA %in% match(input$dbList1, c("mpg", "diamonds", "msleep"))) {
-      # Make selected dataset data.frame ---- 
-      values$tbl <- as.data.frame(get(input$dbList1))
-      # Save column names to obsList ----
-      values$obsList <- colnames(values$tbl)
-      # UI output for 1st observation ----
-      output$obs1 <- renderUI({
-        selectInput(
-          inputId = "observationInput1",
-          label = "1st observation",
-          choices =  values$obsList
-        )
-      })
+  # Create a reactive expression to filter data based on user inputs
+  filtered_data <- reactive({
+    df <- data
+    
+    # Filter data based on selected year range
+    df <- df %>%
+      filter(Year >= input$yearRange[1] & Year <= input$yearRange[2])
+    
+    # Filter data based on selected regions
+    if (!"Global" %in% input$regions) {
+      df <- df %>%
+        filter(Region %in% input$regions)
     }
+    
+    # Filter data based on selected capital type and sub-option
+    if (input$capitalType == "Human Capital") {
+      df <- df %>%
+        filter(`Capital Type` == input$humanCapitalType)
+    } else {
+      df <- df %>%
+        filter(`Capital Type` == input$naturalCapitalType)
+    }
+    
+    df
   })
+  
+  # Create a histogram or bar chart based on the filtered data
+  output$histogram <- renderPlot({
+    # Wait for the user to click the "Apply Changes" button
+    input$applyChanges
+    
+    # Get the filtered data
+    df <- filtered_data()
+    
+    # Aggregate data by country and sum the USD amounts
+    aggregated_data <- df %>%
+      group_by(Country) %>%
+      summarise(Total_USD = sum(USD, na.rm = TRUE)) %>%
+      arrange(desc(Total_USD)) %>%
+      head(10)  # Get the top 10 countries
+    
+    # Create a bar chart using ggplot2
+    p <- ggplot(aggregated_data, aes(x = reorder(Country, Total_USD), y = Total_USD)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      labs(x = "Country", y = "Total USD", title = "Top 10 Countries by Total USD")
+    
+    print(p)
+  })
+  
+}
+
   
   #Revise1 add interactive map into
   cities <- data.frame(
@@ -165,5 +197,5 @@ server1 <- function(input, output) {
   output$aaa <- renderPrint({
     values$obs1
   })
-}
+
 
