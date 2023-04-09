@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(tidyverse)
 ```
-ß
+
 ```{r}
 # read the csv file
 data <- read_csv("www/data/Data.csv")
@@ -29,20 +29,20 @@ str(data)
 colnames(data)[5:length(colnames(data))] <- seq(1995,2018)
 ```
 
-
 ```{r}
 # change column data type
 data[,5:28] <- sapply(data[,5:28], as.numeric )
 str(data)
 ```
-```{r}
-# replace NA to 0
-data <- replace(data,is.na(data),0)
-```
 
 ```{r}
 # melt the dataset
-data <- gather(data,key = "Year",value = "value",-`Country Name`,-`Country Code`,-`Series Name`,-`Series Code`)
+data <- gather(data,key = "Year",value = "Value",-`Country Name`,-`Country Code`,-`Series Name`,-`Series Code`)
+```
+
+```{r}
+# replace NA to 0
+data$Value[is.na(data$Value)] <- 0
 ```
 
 ```{r}
@@ -57,6 +57,12 @@ a <- gsub(" \\(constant 2018 US\\$\\)","",a)
 print(a)
 ```
 
+# K mean
 
+```{r}
+data <- data %>% select(-`Series Code`)
+```
 
-
+```{r}
+data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
+```
