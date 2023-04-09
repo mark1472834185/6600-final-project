@@ -66,3 +66,53 @@ data <- data %>% select(-`Series Code`)
 ```{r}
 data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
 ```
+
+```{r}
+# filter the data to 2018 in order to do custering
+data_2018 <- data %>% filter(Year==2018)
+```
+
+```{r}
+# remove label cols
+data_2018_numeric <- data_2018[,4:55] %>% scale()
+```
+
+```{r}
+pca_data <- prcomp(data_2018_numeric, scale. = TRUE)
+
+# Determine the number of principal components to retain
+eigenvalues <- (pca_data$sdev)^2
+plot(eigenvalues, type = "b", main = "Scree Plot", xlab = "Principal Component", ylab = "Eigenvalue")
+num_pcs <- 5
+
+# Transform the data using the selected principal components
+pca_transformed_data <- predict(pca_data, newdata = data_2018_numeric)[, 1:num_pcs]
+
+# Perform k-means clustering on the transformed data
+k <- 3
+kmeans_result <- kmeans(pca_transformed_data, centers = k)
+
+# View the cluster assignments
+print(kmeans_result$cluster)
+
+# View the cluster centers
+print(kmeans_result$centers)
+
+# View the total within-cluster sum of squares
+print(kmeans_result$tot.withinss)
+
+
+print(length(kmeans_result$cluster))
+
+data_clustered <- cbind(data_2018, cluster = kmeans_result$cluster)
+
+
+
+```
+
+```{r}
+
+print(data_clustered[,c(1,56)] %>% filter(cluster == 1))
+print(data_clustered[,c(1,56)] %>% filter(cluster == 2))
+print(data_clustered[,c(1,56)] %>% filter(cluster == 3))
+```
