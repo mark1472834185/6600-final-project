@@ -46,8 +46,8 @@ ui1 <- fluidPage(
       
       # Select input for selecting capital type
       selectInput("capitalType", "Select Capital Type:",
-                  choices = c("Human Capital", "Human Capital per capita", "Human capital per capita, female", 
-                              "Human capital per capita, male", "Human capital, female", "Human capital, male", "Natural Capital", 
+                  choices = c("Human capital", "Human capital per capita", "Human capital per capita, female", 
+                              "Human capital per capita, male", "Human capital, female", "Human capital, male", "Natural capital", 
                               "Natural capital, agricultural land", "Natural capital, fisheries", "Natural capital, forests: ecosystem services", 
                               "Natural capital, forests: timber", "Natural capital, fossil fuels", "Natural capital, nonrenewable assets: coal", 
                               "Natural capital, nonrenewable assets: gas", "Natural capital, nonrenewable assets: minerals", "Natural capital, nonrenewable assets: oil", 

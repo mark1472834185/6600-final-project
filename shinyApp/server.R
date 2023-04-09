@@ -57,7 +57,7 @@ server1 <- function(input, output, session) {
       
       # Create a bar chart using ggplot2
       p <- ggplot(aggregated_data, aes(x = reorder(Country.Name, Total_USD), y = Total_USD)) +
-        geom_bar(stat = "identity", fill = "steelblue") +
+        geom_bar(stat = "identity", fill = "darkgrey") +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
         labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD")
