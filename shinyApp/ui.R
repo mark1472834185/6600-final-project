@@ -7,7 +7,7 @@ library(leaflet)
 # Define the Shiny app UI
 ui1 <- fluidPage(
   # App title
-  titlePanel("Total Wealth Analysis by Country"),
+  titlePanel("General Wealth Analysis by Country Across the World --- Seattle OG"),
   
   # Add custom CSS for the slider input
   tags$head(
