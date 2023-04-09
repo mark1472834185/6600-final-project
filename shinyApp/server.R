@@ -20,9 +20,9 @@ server1 <- function(input, output) {
       filter(Year >= input$yearRange[1] & Year <= input$yearRange[2])
     
     # Filter data based on selected regions
-    if (!"Global" %in% input$regions) {
+    if (!"Global" %in% input$Continent) {
       df <- df %>%
-        filter(Region %in% input$regions)
+        filter(Region %in% input$Continent)
     }
     
     # Filter data based on selected capital type
