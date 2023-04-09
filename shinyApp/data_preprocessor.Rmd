@@ -1,0 +1,62 @@
+---
+title: "data preprocess for project"
+author: "Group Seattle OG"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+ß
+```{r}
+# read the csv file
+data <- read_csv("www/data/Data.csv")
+```
+
+```{r}
+# see some info
+head(data)
+str(data)
+```
+
+```{r}
+# change columns names
+colnames(data)[5:length(colnames(data))] <- seq(1995,2018)
+```
+
+
+```{r}
+# change column data type
+data[,5:28] <- sapply(data[,5:28], as.numeric )
+str(data)
+```
+```{r}
+# replace NA to 0
+data <- replace(data,is.na(data),0)
+```
+
+```{r}
+# melt the dataset
+data <- gather(data,key = "Year",value = "value",-`Country Name`,-`Country Code`,-`Series Name`,-`Series Code`)
+```
+
+```{r}
+# remove the "(constant 2018 US$)" in Series Name
+data$`Series Name` <- gsub(" \\(constant 2018 US\\$\\)","",data$`Series Name`)
+```
+
+```{r}
+# test regex pattern
+a <- "Human capital (constant 2018 US$)"
+a <- gsub(" \\(constant 2018 US\\$\\)","",a)
+print(a)
+```
+
+
+
+
