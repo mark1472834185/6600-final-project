@@ -5,8 +5,9 @@ library(leaflet)
 library(dplyr)
 library(ggplot2)
 
+
 # Define the Shiny app server
-server1 <- function(input, output) {
+server <- function(input, output) {
   
   # Create a reactive expression to filter data based on user inputs
   filtered_data <- reactive({
@@ -22,14 +23,9 @@ server1 <- function(input, output) {
         filter(Region %in% input$regions)
     }
     
-    # Filter data based on selected capital type and sub-option
-    if (input$capitalType == "Human Capital") {
-      df <- df %>%
-        filter(`Capital Type` == input$humanCapitalType)
-    } else {
-      df <- df %>%
-        filter(`Capital Type` == input$naturalCapitalType)
-    }
+    # Filter data based on selected capital type
+    df <- df %>%
+      filter(`Capital type option` == input$capitalType)
     
     df
   })
@@ -42,24 +38,23 @@ server1 <- function(input, output) {
     # Get the filtered data
     df <- filtered_data()
     
-    # Aggregate data by country and sum the USD amounts
+    # Aggregate data by country and sum the USD values
     aggregated_data <- df %>%
-      group_by(Country) %>%
-      summarise(Total_USD = sum(USD, na.rm = TRUE)) %>%
+      group_by(`Country Name`) %>%
+      summarise(Total_USD = sum(`USD value`, na.rm = TRUE)) %>%
       arrange(desc(Total_USD)) %>%
       head(10)  # Get the top 10 countries
     
     # Create a bar chart using ggplot2
-    p <- ggplot(aggregated_data, aes(x = reorder(Country, Total_USD), y = Total_USD)) +
+    p <- ggplot(aggregated_data, aes(x = reorder(`Country Name`, Total_USD), y = Total_USD)) +
       geom_bar(stat = "identity", fill = "steelblue") +
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      labs(x = "Country", y = "Total USD", title = "Top 10 Countries by Total USD")
+      labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD")
     
     print(p)
   })
-  
-}
+
 
   
   #Revise1 add interactive map into
@@ -107,6 +102,7 @@ server1 <- function(input, output) {
         fitBounds(lng1 = -180, lat1 = -90, lng2 = 180, lat2 = 90)
     }
   })
+
   
   # Observe the updates of the selected columns ----
   observeEvent(input$observationInput1, {
@@ -197,5 +193,5 @@ server1 <- function(input, output) {
   output$aaa <- renderPrint({
     values$obs1
   })
-
+}
 
