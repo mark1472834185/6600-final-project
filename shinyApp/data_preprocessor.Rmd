@@ -60,16 +60,18 @@ print(a)
 # K mean
 
 ```{r}
+# remove Series Code columns
 data <- data %>% select(-`Series Code`)
 ```
 
 ```{r}
+# 
 data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
 ```
 
 ```{r}
 # filter the data to 2018 in order to do custering
-data_2018 <- data %>% filter(Year==2018)
+data_2018 <- data %>% filter(Year==1995)
 ```
 
 ```{r}
@@ -89,7 +91,7 @@ num_pcs <- 5
 pca_transformed_data <- predict(pca_data, newdata = data_2018_numeric)[, 1:num_pcs]
 
 # Perform k-means clustering on the transformed data
-k <- 3
+k <- 4
 kmeans_result <- kmeans(pca_transformed_data, centers = k)
 
 # View the cluster assignments
@@ -115,4 +117,35 @@ data_clustered <- cbind(data_2018, cluster = kmeans_result$cluster)
 print(data_clustered[,c(1,56)] %>% filter(cluster == 1))
 print(data_clustered[,c(1,56)] %>% filter(cluster == 2))
 print(data_clustered[,c(1,56)] %>% filter(cluster == 3))
+print(data_clustered[,c(1,56)] %>% filter(cluster == 4))
+```
+
+```{r}
+# def kmeans func with dataframe, n-clusters and the Year we want to cluster
+# return a dataframe with clusters label
+
+km <- function(df,year,k){
+  # filter the data by year
+  df <- df %>% filter(Year==year)
+  
+  # remove label cols and scale it
+  df_numeric <- df[,4:55] %>% scale()
+  
+  # dimensionality reuction(PCA)
+  df_pca <- prcomp(df_numeric, scale. = TRUE)
+  
+  # Transform the data using the selected principal components
+  # Since we have know the approprate number, we set it to 5
+  num_pcs <- 5
+  pca_transformed_data <- predict(df_pca, newdata = df_numeric)[, 1:num_pcs]
+  
+  # Perform k-means clustering on the transformed data
+  kmeans_result <- kmeans(pca_transformed_data, centers = k)
+  
+  # commbine original df and cluster label
+  df_clustered <- cbind(df, cluster = kmeans_result$cluster)
+  
+  return(df_clustered)
+  
+}
 ```
