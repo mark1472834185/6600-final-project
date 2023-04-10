@@ -95,7 +95,7 @@ ui1 <- fluidPage(
     
     # Main panel
     mainPanel(
-      img(src='earth.png', align = "right"),
+      img(src="~/GitHub/IE-6600-final-project/shinyApp/www/figures/earth.jpg", align = "right", width = "100px", height = "80px"),
       
       tabsetPanel(
         tabPanel("Relation Analysis",
