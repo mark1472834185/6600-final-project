@@ -148,6 +148,13 @@ server1 <- function(input, output, session) {
       # Remove label columns
       df_numeric <- filtered_data_final() %>% select(5:56) %>% scale()
       
+      # Identify and remove constant or near-constant columns
+      non_constant_columns <- apply(df_numeric, 2, function(x) length(unique(x)) > 1)
+      df_numeric <- df_numeric[, non_constant_columns]
+      
+      # Scale the remaining columns
+      df_numeric <- scale(df_numeric)
+      
       # Perform PCA
       pca_data <- prcomp(df_numeric, scale. = TRUE)
       
