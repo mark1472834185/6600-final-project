@@ -4,11 +4,46 @@ library(shiny)
 library(tidyverse)
 library(leaflet)
 library(plotly)
+library(shinythemes)
+library(bs4Dash)
 
 # Define the Shiny app UI
 ui1 <- fluidPage(
+  # add a theme
+  theme = shinytheme("darkly"),
   # App title
   titlePanel("General Wealth Analysis by Country Across the World --- Seattle OG"),
+  
+  # add a theme
+  tags$head(
+    tags$style(HTML("
+    .irs-bar {
+      ...
+    }
+    /* Add your custom CSS styles here */
+    .sidebar {
+      background-color: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+      padding: 15px;
+    }
+    .sidebar h3 {
+      color: #0c5460;
+    }
+    .sidebar .form-group {
+      margin-bottom: 15px;
+    }
+    .sidebar .btn {
+      background-color: #0c5460;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    .sidebar .btn:hover {
+      background-color: #0c5460;
+      color: #ffffff;
+      opacity: 0.9;
+    }
+  "))
+  ),
   
   # Add custom CSS for the slider input
   tags$head(

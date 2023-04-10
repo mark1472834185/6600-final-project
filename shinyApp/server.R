@@ -5,7 +5,8 @@ library(leaflet)
 library(dplyr)
 library(ggplot2)
 library(plotly)
-
+library(shinythemes)
+library(bs4Dash)
 
 # Define the Shiny app server
 server1 <- function(input, output, session) {
@@ -68,12 +69,13 @@ server1 <- function(input, output, session) {
       # Create a bar chart using ggplot2
       p <- ggplot(aggregated_data(), aes(x = reorder(Country.Name, Total_USD), y = Total_USD)) +
         geom_bar(stat = "identity", fill = "darkgrey") +
-        theme_minimal() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
-              axis.text.y = element_text(size = 12),
-              axis.title.x = element_text(size = 14),
-              axis.title.y = element_text(size = 14),
-              plot.title = element_text(size = 16)) +
+        theme(plot.background = element_rect(fill = "transparent"),
+              panel.background = element_rect(fill = "transparent"),
+              axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+              axis.text.y = element_text(size = 14),
+              axis.title.x = element_text(size = 16),
+              axis.title.y = element_text(size = 16),
+              plot.title = element_text(size = 18)) +
         labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD value shown in Bar chart")
       
       print(p)
