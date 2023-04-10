@@ -13,6 +13,8 @@ library(ggplot2)
 library(tidyverse)
 ```
 
+# Data Preprocess
+
 ```{r}
 # read the csv file
 data <- read_csv("www/data/Data.csv")
@@ -57,26 +59,48 @@ a <- gsub(" \\(constant 2018 US\\$\\)","",a)
 print(a)
 ```
 
-# K mean
-
 ```{r}
 # remove Series Code columns
 data <- data %>% select(-`Series Code`)
 ```
 
 ```{r}
-# 
+# pivot wider the data
 data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
 ```
 
 ```{r}
+# mapping <- read_csv("www/data/merged_data.csv")
+# mapping <- mapping[,c(1,7)]
+# mapping <- mapping %>% unique()
+# write csv 
+# write.csv(mapping,file="mapping.csv")
+```
+
+```{r}
+# join the data with Continent
+mapping <- read_csv("www/data/mapping.csv")
+merged_data <- merge(data,mapping,by.x = "Country Name",by.y = "Country.Name",all.x = TRUE)
+
+merged_data <- merged_data %>% relocate("region",.after = "Country Name")
+names(merged_data)[names(merged_data) == "region"] <- "Continent"
+names(merged_data)[names(merged_data) == "Country Name"] <- "Country.Name"
+
+write_csv(merged_data,"www/data/final_revised_data.csv")
+
+```
+
+# Kmeans
+
+```{r}
 # filter the data to 2018 in order to do custering
+data <- read_csv("www/data/final_revised_data.csv")
 data_2018 <- data %>% filter(Year==1995)
 ```
 
 ```{r}
 # remove label cols
-data_2018_numeric <- data_2018[,4:55] %>% scale()
+data_2018_numeric <- data_2018[,5:56] %>% scale()
 ```
 
 ```{r}
@@ -114,8 +138,8 @@ data_clustered <- cbind(data_2018, cluster = kmeans_result$cluster)
 
 ```{r}
 
-print(data_clustered[,c(1,56)] %>% filter(cluster == 1))
-print(data_clustered[,c(1,56)] %>% filter(cluster == 2))
+print(data_clustered[,c(1,57)] %>% filter(cluster == 1))
+print(data_clustered[,c(1,567)] %>% filter(cluster == 2))
 print(data_clustered[,c(1,56)] %>% filter(cluster == 3))
 print(data_clustered[,c(1,56)] %>% filter(cluster == 4))
 ```
