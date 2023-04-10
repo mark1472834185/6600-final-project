@@ -100,9 +100,11 @@ ui1 <- fluidPage(
                  plotOutput("histogram"),
                  plotOutput("piechart")),
         tabPanel("Trend Analysis",
-                 plotOutput("trendPlot"))
+                 plotOutput("trendPlot")),
+        tabPanel("Cluster PCA Analysis",
+                 plotlyOutput("pca_cluster_plot"))
       )
     )
-    
   )
+    
 )
