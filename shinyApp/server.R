@@ -91,9 +91,9 @@ server1 <- function(input, output, session) {
         geom_bar(stat = "identity", width = 1) +
         coord_polar("y", start = 0) +
         theme_void() +
-        theme(legend.position = "right", legend.text = element_text(size = 12),
-              legend.title = element_text(size = 14),
-              plot.title = element_text(size = 16, hjust = 0.5)) +
+        theme(legend.position = "right", legend.text = element_text(size = 15),
+              legend.title = element_text(size = 16),
+              plot.title = element_text(size = 18, hjust = 0.5)) +
         labs(title = "Top 10 Countries by Total USD value shown in pie chart", fill = "Country")
       
       print(p)
@@ -117,7 +117,9 @@ server1 <- function(input, output, session) {
               axis.text.y = element_text(size = 12),
               axis.title.x = element_text(size = 14),
               axis.title.y = element_text(size = 14),
-              plot.title = element_text(size = 16)) +
+              plot.title = element_text(size = 16),
+              legend.text = element_text(size = 15),
+              legend.title = element_text(size = 16)) +
         labs(x = "Year", y = "Total USD", title = "Trend Analysis for Top 10 Countries")
       
       print(p)
