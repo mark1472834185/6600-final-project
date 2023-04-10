@@ -97,14 +97,33 @@ ui1 <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Relation Analysis",
-                 plotOutput("histogram"),
-                 plotOutput("piechart")),
+                 conditionalPanel(
+                   condition = "input.applyChanges > 0",
+                   p("The generated histogram and pie chart regarding the information you selected on the side panel."),
+                   div(style = "width: 100%; display: block;",
+                       plotOutput("histogram")),
+                   div(style = "width: 100%; height: 2px; background-color: gray; display: block; margin-top: 20px; margin-bottom: 20px;"),
+                   div(style = "width: 100%; display: block;",
+                 ),
+                       plotOutput("piechart"))
+        ),
+        
         tabPanel("Trend Analysis",
-                 plotOutput("trendPlot")),
-        tabPanel("Cluster PCA Analysis",
-                 plotlyOutput("pca_cluster_plot"))
+                 conditionalPanel(
+                   condition = "input.applyChanges > 0",
+                   p("The generated Time-Series plot regarding the information you selected on the side panel."),
+                 ),
+                 plotOutput("trendPlot")
+        ),
+              
+        tabPanel("PCA Cluster Analysis",
+                 conditionalPanel(
+                   condition = "input.applyChanges > 0",
+                   p("The generated PCA Cluster plot regarding the information you selected on the side panel."),
+                  ),
+                 plotlyOutput("pca_cluster_plot")
+        )
       )
     )
   )
-    
 )
