@@ -95,6 +95,8 @@ ui1 <- fluidPage(
     
     # Main panel
     mainPanel(
+      img(src='earth.png', align = "right"),
+      
       tabsetPanel(
         tabPanel("Relation Analysis",
                  conditionalPanel(
