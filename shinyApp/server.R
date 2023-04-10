@@ -96,6 +96,31 @@ server1 <- function(input, output, session) {
       print(p)
     })
     
+    output$trendPlot <- renderPlot({
+      req(filtered_data())
+      
+      # Filter data to get the top 10 countries
+      top_countries <- aggregated_data()$Country.Name
+      
+      # Filter the data to include only the top 10 countries
+      trend_data <- filtered_data() %>%
+        filter(Country.Name %in% top_countries)
+      
+      # Generate the trend line plot
+      p <- ggplot(trend_data, aes(x = Year, y = Total_USD, color = Country.Name)) +
+        geom_line(size = 1) +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.x = element_text(size = 14),
+              axis.title.y = element_text(size = 14),
+              plot.title = element_text(size = 16)) +
+        labs(x = "Year", y = "Total USD", title = "Trend Analysis for Top 10 Countries")
+      
+      print(p)
+    })
+    
+    
   
 
 

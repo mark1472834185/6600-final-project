@@ -60,12 +60,14 @@ ui1 <- fluidPage(
     
     # Main panel
     mainPanel(
-      # Output for displaying the histogram
-      plotOutput("histogram"),
-      
-      # Output for displaying the pie chart
-      plotOutput("piechart")
+      tabsetPanel(
+        tabPanel("Relation Analysis",
+                 plotOutput("histogram"),
+                 plotOutput("piechart")),
+        tabPanel("Trend Analysis",
+                 plotOutput("trendPlot"))
+      )
     )
+    
   )
 )
-
