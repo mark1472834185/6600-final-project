@@ -1,30 +1,49 @@
 
 
-# def kmeans function with dataframe, n-clusters and the Year we want to cluster
-# return a dataframe with clusters label
+# this function apply kemans with df, n-clusters 
+# return a scatter plot with clusters label
 
-km <- function(df,year,k){
-  # filter the data by year
-  df <- df %>% filter(Year==year)
+km <- function(df,k){
+  set.seed(11)
   
-  # remove label cols and scale it
-  df_numeric <- df[,4:55] %>% scale()
+  library(dplyr)
   
-  # dimensionality reduction(PCA)
+  # Aggregate data by country and sum the USD values
+  df <- df %>% 
+    group_by(Country.Name) %>%
+    summarise(across(where(is.numeric), sum))
+  
+  # Remove columns with zero variance
+  df_numeric <- df[,3:ncol(df)] %>% select(where(function(x) var(x) != 0))
+  print(df_numeric)
+  # dimensionality reduction (PCA)
   df_pca <- prcomp(df_numeric, scale. = TRUE)
   
   # Transform the data using the selected principal components
-  # Since we have know the appropriate number, we set it to 5
-  num_pcs <- 5
+  num_pcs <- 3
   pca_transformed_data <- predict(df_pca, newdata = df_numeric)[, 1:num_pcs]
   
   # Perform k-means clustering on the transformed data
-  kmeans_result <- kmeans(pca_transformed_data, centers = k)
+  kmeans_result <- kmeans(pca_transformed_data, centers = min(k, nrow(pca_transformed_data)))
   
-  # combine original df and cluster label
+  # Combine original df and cluster label
   df_clustered <- cbind(df, cluster = kmeans_result$cluster)
   
-  # return clustered data
-  return(df_clustered)
+  # Combine the original dataset with the PCA transformed data and cluster assignments
+  data_pca_clustered <- cbind(df, pca_transformed_data, cluster = kmeans_result$cluster)
+  data_pca_clustered$cluster <- as.factor(data_pca_clustered$cluster)
   
+  # Create a Plotly PCA clustering plot
+  fig <- plot_ly(data_pca_clustered, type = "scatter", mode = "markers",
+                 x = ~PC1, y = ~PC2,
+                 text = ~Country.Name,
+                 marker = list(symbol = ~cluster, color = ~cluster, size = 10, showscale = FALSE),
+                 hovertemplate = "Country: %{text}<br>Cluster: %{marker.symbol}",
+                 showlegend = F)
+  
+  return(fig)
 }
+
+
+
+

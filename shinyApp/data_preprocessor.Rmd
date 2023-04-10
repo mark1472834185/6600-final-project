@@ -82,11 +82,12 @@ data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
 mapping <- read_csv("www/data/mapping.csv")
 merged_data <- merge(data,mapping,by.x = "Country Name",by.y = "Country.Name",all.x = TRUE)
 
+
 merged_data <- merged_data %>% relocate("region",.after = "Country Name")
 names(merged_data)[names(merged_data) == "region"] <- "Continent"
 names(merged_data)[names(merged_data) == "Country Name"] <- "Country.Name"
+merged_data[merged_data$`Country.Name`=="Costa Rica",]$Continent <- "	North America"
 
-write_csv(merged_data,"www/data/final_revised_data.csv")
 
 ```
 

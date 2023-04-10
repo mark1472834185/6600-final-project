@@ -132,6 +132,11 @@ ui1 <- fluidPage(
                   visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space 
                   "),
                  plotlyOutput("pca_cluster_plot"),
+                  sliderInput("k",
+                              "Select k:",
+                              min = 2,
+                              max = 7,
+                              value = 3),
                  uiOutput("planetImage_pca")
         )
       )
