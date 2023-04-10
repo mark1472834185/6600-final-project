@@ -124,7 +124,7 @@ ui1 <- fluidPage(
         ),
               
         tabPanel("PCA Cluster Analysis",
-                p("The automatically generated PCA Cluster plot regarding the year and continent information. Showing the relationship between
+                p("The automatically generated PCA Cluster plot only respond to the change in year and continent information. Showing the relationship between
                   PC1 and PC2. In this case, the first 5 principal components have been chose for further analysis, since they are representing the 5 linear 
                   combinations of the original features that capture the most variation in the original Capital dataset. These components are uncorrelated with each other,
                   so that they are suitable for further analysis without redundancy. In the PCA plot, the x-axis (PC1) and the y-axis (PC2) are chosen because they are the first two principal components 
