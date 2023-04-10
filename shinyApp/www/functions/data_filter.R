@@ -1,5 +1,3 @@
-
-
 # this function use to filter the dataset and return a filtered dataset
 # para: df, yearRange,
 data_filter <- function(df,year,continent,capital){
