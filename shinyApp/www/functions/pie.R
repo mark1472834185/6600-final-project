@@ -18,8 +18,8 @@ pie <- function(df,capital){
     geom_bar(stat = "identity", width = 1) +
     coord_polar("y", start = 0) +
     theme_void() +
-    theme(legend.position = "right", legend.text = element_text(size = 12),
-          legend.title = element_text(size = 14),
+    theme(legend.position = "right", legend.text = element_text(size = 15),
+          legend.title = element_text(size = 18),
           plot.title = element_text(size = 16, hjust = 0.5)) +
     labs(title = "Top 10 Countries by Total USD value shown in pie chart", fill = "Country")
   

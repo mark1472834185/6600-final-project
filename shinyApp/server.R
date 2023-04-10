@@ -2,7 +2,7 @@
 
 
 # Define the Shiny app server
-server <- function(input, output,session) {
+server <- function(input, output, session) {
   source("www/functions/data_filter.R")
   source("www/functions/barChart.R")
   source("www/functions/pie.R")

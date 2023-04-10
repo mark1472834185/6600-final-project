@@ -24,11 +24,13 @@ trendPlot <- function(df,capital){
   p <- ggplot(trend_data, aes(x = Year, y = .data[[capital]], color = Country.Name)) +
     geom_line(size = 1) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
-          axis.text.y = element_text(size = 12),
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+          axis.text.y = element_text(size = 14),
           axis.title.x = element_text(size = 14),
           axis.title.y = element_text(size = 14),
-          plot.title = element_text(size = 16)) +
+          plot.title = element_text(size = 16),
+          legend.text = element_text(size = 15),
+          legend.title = element_text(size = 16)) +
     labs(x = "Year", y = "Total USD", title = "Trend Analysis for Top 10 Countries")
 
   return(p)
