@@ -22,7 +22,7 @@ server <- function(input, output,session) {
                            k = NULL)
   
   # observe Apply change button
-  observe({
+  observeEvent(input$applyChanges, {
     # reassign the values
     values$year <- input$yearRange
     values$continent <- input$continent
@@ -43,10 +43,31 @@ server <- function(input, output,session) {
     output$piechart <- renderPlot({ pie(values$df,values$capital) })
     
     # update trend Plot when reactive values changed
-    output$trendPlot <- renderPlot({ trendPlot(values$df,values$capital)})
+    output$trendPlot <- renderPlot({ trendPlot(values$df, values$capital) })
     
     # update kmeans clustering when reactive values changed
     output$pca_cluster_plot <- renderPlotly({ km(values$df,values$k) })
+  })
+  
+  
+  observeEvent(input$applyChanges, {
+    output$planetImage_trend <- renderUI({
+      if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+        div(style = "display: flex; justify-content: center;",
+            img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+        )
+      }
+    })
+  })
+  
+  observeEvent(input$applyChanges, {
+    output$planetImage_pca <- renderUI({
+      if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+        div(style = "display: flex; justify-content: center;",
+            img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+        )
+      }
+    })
   })
   
   #Revise1 add interactive map into

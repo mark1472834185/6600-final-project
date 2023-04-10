@@ -3,6 +3,9 @@
 # this function will draw a top10 trendPlot
 # para: df, capital
 trendPlot <- function(df,capital){
+  if (is.null(df)) {
+    return(NULL)  # Do not render any plot
+  }
   # Aggregate data by country and sum the USD values
   df_top10 <- df %>% 
     group_by(Country.Name) %>% 

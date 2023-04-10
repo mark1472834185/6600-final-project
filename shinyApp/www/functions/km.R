@@ -4,6 +4,9 @@
 # return a scatter plot with clusters label
 
 km <- function(df,k){
+  if (is.null(df)) {
+    return(NULL)  # Do not render any plot
+  }
   set.seed(11)
   
   library(dplyr)

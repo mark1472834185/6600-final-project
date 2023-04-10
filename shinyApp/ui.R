@@ -116,27 +116,31 @@ ui1 <- fluidPage(
                    condition = "input.applyChanges > 0",
                    p("The generated Time-Series plot regarding the information on the side panel. Showing in detailed about the trend of each
                      country in the capital type selected and year range selected"),
-                   
+                   plotOutput("trendPlot")
                  ),
-                 plotOutput("trendPlot"),
+                 
                  uiOutput("planetImage_trend")
                  
         ),
               
         tabPanel("PCA Cluster Analysis",
-                p("The automatically generated PCA Cluster plot only respond to the change in year and continent information. Showing the relationship between
-                  PC1 and PC2. In this case, the first 5 principal components have been chose for further analysis, since they are representing the 5 linear 
-                  combinations of the original features that capture the most variation in the original Capital dataset. These components are uncorrelated with each other,
-                  so that they are suitable for further analysis without redundancy. In the PCA plot, the x-axis (PC1) and the y-axis (PC2) are chosen because they are the first two principal components 
-                  that capture the maximum amount of variation from the previous mentioned 5 principle components. By plotting the data points in this lower-dimensional space,  
-                  visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space 
-                  "),
-                 plotlyOutput("pca_cluster_plot"),
-                  sliderInput("k",
-                              "Select k:",
-                              min = 2,
-                              max = 7,
-                              value = 3),
+                 conditionalPanel(
+                   condition = "input.applyChanges > 0",
+                    p("The automatically generated PCA Cluster plot only respond to the change in year and continent information. Showing the relationship between
+                      PC1 and PC2. In this case, the first 5 principal components have been chose for further analysis, since they are representing the 5 linear 
+                      combinations of the original features that capture the most variation in the original Capital dataset. These components are uncorrelated with each other,
+                      so that they are suitable for further analysis without redundancy. In the PCA plot, the x-axis (PC1) and the y-axis (PC2) are chosen because they are the first two principal components 
+                      that capture the maximum amount of variation from the previous mentioned 5 principle components. By plotting the data points in this lower-dimensional space,  
+                      visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space 
+                      "),
+                    plotlyOutput("pca_cluster_plot"),
+                       sliderInput("k",
+                                "Select k:",
+                                min = 2,
+                                max = 7,
+                                value = 3),
+                 ),
+                 
                  uiOutput("planetImage_pca")
         )
       )
