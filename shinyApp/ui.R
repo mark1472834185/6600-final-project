@@ -101,7 +101,7 @@ ui1 <- fluidPage(
         tabPanel("Relation Analysis",
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
-                   p("The generated histogram and pie chart regarding the information you selected on the side panel."),
+                   p("The generated barchart and pie chart regarding the information you selected on the side panel."),
                    div(style = "width: 100%; display: block;",
                        plotOutput("histogram")),
                    div(style = "width: 100%; height: 2px; background-color: gray; display: block; margin-top: 20px; margin-bottom: 20px;"),
@@ -114,16 +114,22 @@ ui1 <- fluidPage(
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
                    p("The generated Time-Series plot regarding the information you selected on the side panel."),
+                   
                  ),
-                 plotOutput("trendPlot")
+                 plotOutput("trendPlot"),
+                 uiOutput("planetImage_trend")
+                 
         ),
               
         tabPanel("PCA Cluster Analysis",
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
-                   p("The generated PCA Cluster plot regarding the information you selected on the side panel."),
-                  ),
-                 plotlyOutput("pca_cluster_plot")
+                   p("The automatic generated PCA Cluster plot regarding the year and continent information. It showed the relationship between
+                     PC1 and PC2"),
+                   
+                 ),
+                 plotlyOutput("pca_cluster_plot"),
+                 uiOutput("planetImage_pca")
         )
       )
     )

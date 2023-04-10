@@ -18,6 +18,7 @@ server1 <- function(input, output, session) {
   
     filtered_data <- reactiveVal()
     
+    
     observeEvent(input$applyChanges, {
       req(input$yearRange, input$continent, input$capitalType)
       
@@ -43,6 +44,8 @@ server1 <- function(input, output, session) {
         filter(capitalType == input$capitalType)
       
       filtered_data(df)
+      
+      
     })
     
     aggregated_data <- reactive({
@@ -179,9 +182,29 @@ server1 <- function(input, output, session) {
       
       return(fig)
     })
-    
-    
 
+    
+    observeEvent(input$applyChanges, {
+      output$planetImage_trend <- renderUI({
+        if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+          div(style = "display: flex; justify-content: center;",
+              img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+          )
+        }
+      })
+    })
+    
+    observeEvent(input$applyChanges, {
+      output$planetImage_pca <- renderUI({
+        if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+          div(style = "display: flex; justify-content: center;",
+              img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+          )
+        }
+      })
+    })
+    
+    
   
   #Revise1 add interactive map into
   cities <- data.frame(
