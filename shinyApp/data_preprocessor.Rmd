@@ -149,3 +149,46 @@ km <- function(df,year,k){
   
 }
 ```
+
+```{r}
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length,
+               marker = list(size = 10,
+                             color = 'rgba(255, 182, 193, .9)',
+                             line = list(color = 'rgba(152, 0, 0, .8)',
+                                         width = 2)))
+fig <- fig %>% layout(title = 'Styled Scatter',
+         yaxis = list(zeroline = FALSE),
+         xaxis = list(zeroline = FALSE))
+
+fig
+
+```
+
+```{r}
+# visualiztion for kmeans
+
+data_pca_clustered <- cbind(data_2018,pca_transformed_data, cluster = kmeans_result$cluster)
+data_pca_clustered$cluster <- as.character(data_pca_clustered$cluster)
+
+p <- ggplot(data = data_pca_clustered,aes(x=PC1,y=PC2))+
+  geom_point(aes(color=cluster,shape=cluster))
+
+fig <- ggplotly(p)
+fig
+
+```
+
+```{r}
+fig <- plot_ly(type = 'scatter',mode='markers')
+fig <- fig %>% 
+  add_trace(
+    data = data_pca_clustered,
+    x= ~PC1,
+    y= ~PC2,
+    text = ~`Country Name`,
+    marker = list(shape=~cluster)
+  )
+fig
+```
