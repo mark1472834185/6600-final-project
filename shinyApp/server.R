@@ -10,9 +10,9 @@ library(bs4Dash)
 
 # Define the Shiny app server
 server1 <- function(input, output, session) {
-  data <- read_csv("~/GitHub/IE-6600-final-project/shinyApp/www/data/revised_data.csv")
+  data <- read_csv("https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/data/revised_data.csv")
   data$capitalType <- gsub(" \\(constant 2018 US\\$\\)","",data$capitalType)
-  data_final <- read_csv("~/GitHub/IE-6600-final-project/shinyApp/www/data/final_revised_data.csv")
+  data_final <- read_csv("https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/data/final_revised_data.csv")
     
   
   
