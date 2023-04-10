@@ -46,7 +46,10 @@ IE6600-final-project
 ## Submit Your Work on Github
 Upon the completion of the RShiny app development, each team member should upload the team project folder to their individual github repo.
 
-Do not include the dataset, just put the dataset link in the README.md. 
+Do not include the dataset, put the dataset link in the README.md. 
+Here is the dataset link: 
+https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/data/final_revised_data.csv
+https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/data/revised_data.csv
 
 ## Deploy Your Work on shinyapps.io
 
