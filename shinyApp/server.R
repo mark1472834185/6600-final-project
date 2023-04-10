@@ -4,6 +4,7 @@ library(tidyverse)
 library(leaflet)
 library(dplyr)
 library(ggplot2)
+library(plotly)
 
 
 # Define the Shiny app server
@@ -45,25 +46,56 @@ server1 <- function(input, output, session) {
       filtered_data(df)
     })
     
-    output$histogram <- renderPlot({
+    aggregated_data <- reactive({
       req(filtered_data())
       
+      df_filtered <- filtered_data()
+      
       # Aggregate data by country and sum the USD values
-      aggregated_data <- filtered_data() %>%
+      df_top10 <- df_filtered %>%
         group_by(Country.Name) %>%
         summarise(Total_USD = sum(Total_USD, na.rm = TRUE)) %>%
         arrange(desc(Total_USD)) %>%
         head(10)  # Get the top 10 countries
       
+      df_top10
+    })
+    
+    
+    output$histogram <- renderPlot({
+      req(aggregated_data())
+      
       # Create a bar chart using ggplot2
-      p <- ggplot(aggregated_data, aes(x = reorder(Country.Name, Total_USD), y = Total_USD)) +
+      p <- ggplot(aggregated_data(), aes(x = reorder(Country.Name, Total_USD), y = Total_USD)) +
         geom_bar(stat = "identity", fill = "darkgrey") +
         theme_minimal() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD")
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+              axis.text.y = element_text(size = 12),
+              axis.title.x = element_text(size = 14),
+              axis.title.y = element_text(size = 14),
+              plot.title = element_text(size = 16)) +
+        labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD value shown in Bar chart")
+      
+      print(p)
+    
+    })
+    
+    output$piechart <- renderPlot({
+      req(aggregated_data())
+      
+      # Create a pie chart using ggplot2
+      p <- ggplot(aggregated_data(), aes(x = "", y = Total_USD, fill = Country.Name)) +
+        geom_bar(stat = "identity", width = 1) +
+        coord_polar("y", start = 0) +
+        theme_void() +
+        theme(legend.position = "right", legend.text = element_text(size = 12),
+              legend.title = element_text(size = 14),
+              plot.title = element_text(size = 16, hjust = 0.5)) +
+        labs(title = "Top 10 Countries by Total USD value shown in pie chart", fill = "Country")
       
       print(p)
     })
+    
   
 
 
@@ -115,4 +147,3 @@ server1 <- function(input, output, session) {
   })
 
 }
-

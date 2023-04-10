@@ -3,6 +3,7 @@ library(DT)
 library(shiny)
 library(tidyverse)
 library(leaflet)
+library(plotly)
 
 # Define the Shiny app UI
 ui1 <- fluidPage(
@@ -60,7 +61,10 @@ ui1 <- fluidPage(
     # Main panel
     mainPanel(
       # Output for displaying the histogram
-      plotOutput("histogram")
+      plotOutput("histogram"),
+      
+      # Output for displaying the pie chart
+      plotOutput("piechart")
     )
   )
 )
