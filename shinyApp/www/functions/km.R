@@ -42,7 +42,35 @@ km <- function(df,k){
                  text = ~Country.Name,
                  marker = list(symbol = ~cluster, color = ~cluster, size = 10, showscale = FALSE),
                  hovertemplate = "Country: %{text}<br>Cluster: %{marker.symbol}",
-                 showlegend = F)
+                 showlegend = F) %>%
+    layout(
+      xaxis = list(
+        title = "PC1",
+        zerolinecolor = "white",
+        tickfont = list(color = "white"),
+        showgrid = FALSE,
+        gridcolor = "gray20",
+        linecolor = "gray20",
+        titlefont = list(color = "white")
+      ),
+      yaxis = list(
+        title = "PC2",
+        zerolinecolor = "white",
+        tickfont = list(color = "white"),
+        showgrid = FALSE,
+        gridcolor = "gray20",
+        linecolor = "gray20",
+        titlefont = list(color = "white")
+      ),
+      title = list(
+        text = "PCA Cluster Analysis",
+        font = list(color = "white")
+      ),
+      legend = list(
+        font = list(color = "white")
+      ),
+      margin = list(l = 50, r = 50, b = 50, t = 50, pad = 0)
+    )
   
   return(fig)
 }

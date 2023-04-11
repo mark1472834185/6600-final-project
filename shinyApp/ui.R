@@ -115,7 +115,7 @@ ui1 <- fluidPage(
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
                    p("The generated Time-Series plot regarding the information on the side panel. Showing in detailed about the trend of each
-                     country in the capital type selected and year range selected"),
+                     country in the capital type selected and year range selected", style = "margin-top: 20px; margin-bottom: 20px;"),
                    plotlyOutput("trendPlot")
                  ),
                  
@@ -132,7 +132,7 @@ ui1 <- fluidPage(
                       so that they are suitable for further analysis without redundancy. In the PCA plot, the x-axis (PC1) and the y-axis (PC2) are chosen because they are the first two principal components 
                       that capture the maximum amount of variation from the previous mentioned 5 principle components. By plotting the data points in this lower-dimensional space,  
                       visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space 
-                      "),
+                      ", style = "margin-top: 20px; margin-bottom: 20px;"),
                     plotlyOutput("pca_cluster_plot"),
                        sliderInput("k",
                                 "Select k:",

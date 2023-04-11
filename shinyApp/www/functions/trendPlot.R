@@ -22,15 +22,19 @@ trendPlot <- function(df,capital){
   
   # Generate the trend line plot
   p <- ggplot(trend_data, aes(x = Year, y = .data[[capital]], color = Country.Name)) +
+    geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf),
+              fill = "gray20", alpha = 0.3) + 
     geom_line(size = 1) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
-          axis.text.y = element_text(size = 14),
-          axis.title.x = element_text(size = 14),
-          axis.title.y = element_text(size = 14),
-          plot.title = element_text(size = 16),
-          legend.text = element_text(size = 15),
-          legend.title = element_text(size = 16)) +
+    theme(plot.background = element_rect(fill = "gray20"),
+          panel.background = element_rect(fill = "gray20"),
+          axis.text.x = element_text(angle = 45, hjust = 1, size = 14, color = "white"),
+          axis.text.y = element_text(size = 14, color = "white"),
+          axis.title.x = element_text(size = 14, color = "white"),
+          axis.title.y = element_text(size = 14, color = "white"),
+          plot.title = element_text(size = 16, color = "white"),
+          legend.text = element_text(size = 15, color = "white"),
+          legend.title = element_text(size = 16, color = "white")) +
     labs(x = "Year", y = "Total USD", title = "Trend Analysis for Top 10 Countries")
 
   return(ggplotly(p))

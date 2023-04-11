@@ -40,7 +40,7 @@ server <- function(input, output, session) {
     output$histogram <- renderPlot({ barChart(values$df,values$capital)})
     
     # update pie Chart when reactive values changed
-    output$piechart <- renderPlot({ pie(values$df,values$capital) })
+    output$piechart <- renderPlot({ pie(values$df,values$capital) }, bg = "transparent")
     
     # update trend Plot when reactive values changed
     output$trendPlot <- renderPlotly({ trendPlot(values$df, values$capital) })
