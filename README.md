@@ -15,5 +15,5 @@ Required R packages:
 
 shiny, tidyverse, leaflet, plotly, shinythemes, bs4Dash, ggplot2, dplyr, and DT.
 
-Deployed R shiny link: 
+Deployed R shiny app link: 
 https://seattleogawm.shinyapps.io/shinyapp/
