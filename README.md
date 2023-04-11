@@ -1,6 +1,6 @@
 ## General Wealth Analysis by Country Across the World
 
-This is a R Shiny App Project to discover the Total value of USD by different or combination of continents, year, and capital type.
+This is a R Shiny App Project to discover, visualize, and analyze the general wealth of countries across the world. The wealth status was counted by the Total value of USD by different or combination of continents, year, and capital type.
 
 ## Dataset
 
@@ -16,3 +16,4 @@ Required R packages:
 shiny, tidyverse, leaflet, plotly, shinythemes, bs4Dash, ggplot2, dplyr, and DT.
 
 Deployed R shiny link: 
+https://seattleogawm.shinyapps.io/shinyapp/
