@@ -102,7 +102,7 @@ ui1 <- fluidPage(
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
                    p("The generated barchart and piechart regarding the information on the side panel. Showing detailed relationship between
-                      countries in the capital type and year range selected", style = "margin-top: 20px; margin-bottom: 20px;"),
+                    countries in the capital type and year range selected", style = "margin-top: 20px; margin-bottom: 20px;"),
                    div(style = "width: 100%; display: block;",
                        plotOutput("histogram")),
                    div(style = "width: 100%; height: 2px; background-color: gray; display: block; margin-top: 20px; margin-bottom: 20px;"),
@@ -115,7 +115,7 @@ ui1 <- fluidPage(
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
                    p("The generated Time-Series plot regarding the information on the side panel. Showing in detailed about the trend of each
-                     country in the capital type selected and year range selected", style = "margin-top: 20px; margin-bottom: 20px;"),
+                     country in the capital type selected and year range selected"),
                    plotOutput("trendPlot")
                  ),
                  
@@ -131,8 +131,8 @@ ui1 <- fluidPage(
                       combinations of the original features that capture the most variation in the original Capital dataset. These components are uncorrelated with each other,
                       so that they are suitable for further analysis without redundancy. In the PCA plot, the x-axis (PC1) and the y-axis (PC2) are chosen because they are the first two principal components 
                       that capture the maximum amount of variation from the previous mentioned 5 principle components. By plotting the data points in this lower-dimensional space,  
-                      visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space,  
-                      ", style = "margin-top: 20px; margin-bottom: 20px;"),
+                      visualization of the relationships and patterns in the data become clearer, that might not be apparent in the original higher-dimensional space 
+                      "),
                     plotlyOutput("pca_cluster_plot"),
                        sliderInput("k",
                                 "Select k:",

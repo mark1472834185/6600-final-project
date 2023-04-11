@@ -43,7 +43,7 @@ server <- function(input, output, session) {
     output$piechart <- renderPlot({ pie(values$df,values$capital) })
     
     # update trend Plot when reactive values changed
-    output$trendPlot <- renderPlot({ trendPlot(values$df, values$capital) })
+    output$trendPlot <- renderPlotly({ trendPlot(values$df, values$capital) })
     
     # update kmeans clustering when reactive values changed
     output$pca_cluster_plot <- renderPlotly({ km(values$df,values$k) })
