@@ -1,0 +1,219 @@
+---
+title: "data preprocess for project"
+author: "Group Seattle OG"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+
+# Data Preprocess
+
+```{r}
+# read the csv file
+data <- read_csv("www/data/Data.csv")
+```
+
+```{r}
+# see some info
+head(data)
+str(data)
+```
+
+```{r}
+# change columns names
+colnames(data)[5:length(colnames(data))] <- seq(1995,2018)
+```
+
+```{r}
+# change column data type
+data[,5:28] <- sapply(data[,5:28], as.numeric )
+str(data)
+```
+
+```{r}
+# melt the dataset
+data <- gather(data,key = "Year",value = "Value",-`Country Name`,-`Country Code`,-`Series Name`,-`Series Code`)
+```
+
+```{r}
+# replace NA to 0
+data$Value[is.na(data$Value)] <- 0
+```
+
+```{r}
+# remove the "(constant 2018 US$)" in Series Name
+data$`Series Name` <- gsub(" \\(constant 2018 US\\$\\)","",data$`Series Name`)
+```
+
+```{r}
+# test regex pattern
+a <- "Human capital (constant 2018 US$)"
+a <- gsub(" \\(constant 2018 US\\$\\)","",a)
+print(a)
+```
+
+```{r}
+# remove Series Code columns
+data <- data %>% select(-`Series Code`)
+```
+
+```{r}
+# pivot wider the data
+data <- data %>% pivot_wider(names_from = `Series Name`,values_from = Value)
+```
+
+```{r}
+# mapping <- read_csv("www/data/merged_data.csv")
+# mapping <- mapping[,c(1,7)]
+# mapping <- mapping %>% unique()
+# write csv 
+# write.csv(mapping,file="mapping.csv")
+```
+
+```{r}
+# join the data with Continent
+mapping <- read_csv("www/data/mapping.csv")
+merged_data <- merge(data,mapping,by.x = "Country Name",by.y = "Country.Name",all.x = TRUE)
+
+
+merged_data <- merged_data %>% relocate("region",.after = "Country Name")
+names(merged_data)[names(merged_data) == "region"] <- "Continent"
+names(merged_data)[names(merged_data) == "Country Name"] <- "Country.Name"
+merged_data[merged_data$`Country.Name`=="Costa Rica",]$Continent <- "	North America"
+
+
+```
+
+# Kmeans
+
+```{r}
+# filter the data to 2018 in order to do custering
+data <- read_csv("www/data/final_revised_data.csv")
+data_2018 <- data %>% filter(Year==1995)
+```
+
+```{r}
+# remove label cols
+data_2018_numeric <- data_2018[,5:56] %>% scale()
+```
+
+```{r}
+pca_data <- prcomp(data_2018_numeric, scale. = TRUE)
+
+# Determine the number of principal components to retain
+eigenvalues <- (pca_data$sdev)^2
+plot(eigenvalues, type = "b", main = "Scree Plot", xlab = "Principal Component", ylab = "Eigenvalue")
+num_pcs <- 5
+
+# Transform the data using the selected principal components
+pca_transformed_data <- predict(pca_data, newdata = data_2018_numeric)[, 1:num_pcs]
+
+# Perform k-means clustering on the transformed data
+k <- 4
+kmeans_result <- kmeans(pca_transformed_data, centers = k)
+
+# View the cluster assignments
+print(kmeans_result$cluster)
+
+# View the cluster centers
+print(kmeans_result$centers)
+
+# View the total within-cluster sum of squares
+print(kmeans_result$tot.withinss)
+
+
+print(length(kmeans_result$cluster))
+
+data_clustered <- cbind(data_2018, cluster = kmeans_result$cluster)
+
+
+
+```
+
+```{r}
+
+print(data_clustered[,c(1,57)] %>% filter(cluster == 1))
+print(data_clustered[,c(1,567)] %>% filter(cluster == 2))
+print(data_clustered[,c(1,56)] %>% filter(cluster == 3))
+print(data_clustered[,c(1,56)] %>% filter(cluster == 4))
+```
+
+```{r}
+# def kmeans func with dataframe, n-clusters and the Year we want to cluster
+# return a dataframe with clusters label
+
+km <- function(df,year,k){
+  # filter the data by year
+  df <- df %>% filter(Year==year)
+  
+  # remove label cols and scale it
+  df_numeric <- df[,4:55] %>% scale()
+  
+  # dimensionality reuction(PCA)
+  df_pca <- prcomp(df_numeric, scale. = TRUE)
+  
+  # Transform the data using the selected principal components
+  # Since we have know the approprate number, we set it to 5
+  num_pcs <- 5
+  pca_transformed_data <- predict(df_pca, newdata = df_numeric)[, 1:num_pcs]
+  
+  # Perform k-means clustering on the transformed data
+  kmeans_result <- kmeans(pca_transformed_data, centers = k)
+  
+  # commbine original df and cluster label
+  df_clustered <- cbind(df, cluster = kmeans_result$cluster)
+  
+  return(df_clustered)
+  
+}
+```
+
+```{r}
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length,
+               marker = list(size = 10,
+                             color = 'rgba(255, 182, 193, .9)',
+                             line = list(color = 'rgba(152, 0, 0, .8)',
+                                         width = 2)))
+fig <- fig %>% layout(title = 'Styled Scatter',
+         yaxis = list(zeroline = FALSE),
+         xaxis = list(zeroline = FALSE))
+
+fig
+
+```
+
+```{r}
+# visualiztion for kmeans
+
+data_pca_clustered <- cbind(data_2018,pca_transformed_data, cluster = kmeans_result$cluster)
+data_pca_clustered$cluster <- as.character(data_pca_clustered$cluster)
+
+p <- ggplot(data = data_pca_clustered,aes(x=PC1,y=PC2))+
+  geom_point(aes(color=cluster,shape=cluster))
+
+fig <- ggplotly(p)
+fig
+
+```
+
+```{r}
+fig <- plot_ly(type = 'scatter',mode='markers')
+fig <- fig %>% 
+  add_trace(
+    data = data_pca_clustered,
+    x= ~PC1,
+    y= ~PC2,
+    text = ~`Country Name`,
+    marker = list(shape=~cluster)
+  )
+fig
+```

@@ -1,78 +1,19 @@
+## General Wealth Analysis by Country Across the World
 
-# Final Projects
+This is a R Shiny App Project to discover, visualize, and analyze the general wealth of countries across the world. The wealth status was counted by the Total value of USD by different or combination of continents, year, and capital type.
 
-## Overview
+## Dataset
 
-The purpose of the project is to apply the knowledge learned in the class to real-world problems. Projects will help students gain working experience in data visualization, data processing, data exploration, and development of a web app, here we use R and RShiny to approach such goals. 
+This a public dataset named wealth account from the World Bank. 
+https://databank.worldbank.org/source/wealth-accounts#
 
-## Directory Tree
-```R
-IE6600-final-project
-|   README.md # you may have your project introduction here
-|   project_guideline.pdf
-|
-+---shinyApp
-|   |   global.R # global settings
-|   |   server.R # server
-|   |   ui.R # ui
-|   |   
-|   \---www
-|       +---figures # put your figures here if necessary
-|       \---functions # put your created functions 
-\---slides # you may store your presentation materials here
-```
+## Introduction
 
-## Getting Started
+We design a slider input for users to drag and adjust the year range, a interactive map to allow users to zoom in and select specific continent and a select box input to decide the capital type on the UI. On the right side of the UI, there are three types of analysis such as relation analysis, trend analysis, and PCA cluster analysis. In the server part the function will generate pie chart, histogram, line chart and scatter plot for the corresponding analysis and display on the UI. The top 10 countries of selected continents will be shown in the plot.
 
->If you are new to git and github, please watch the video tutorial below first: [Git and GitHub for Beginners Tutorial](https://www.youtube.com/watch?v=tRZGeaHPoaw) by Kevin Stratvert
+Required R packages: 
 
-> git cheatsheet: https://education.github.com/git-cheat-sheet-education.pdf \
-> git overview book: https://git-scm.com/book/en/v2
+shiny, tidyverse, leaflet, plotly, shinythemes, bs4Dash, ggplot2, dplyr, and DT.
 
-1. Install [git](https://www.git-scm.com/)
-
-2. Clone this repository to your local directory:
-
-    `git clone https://github.com/zhenyuanlu/IE6600-final-project.git`
-
-3. Go over the project instructions in the pdf:
-
-    <a href="https://github.com/zhenyuanlu/IE6600-final-project/blob/main/project_guideline.pdf" target="_blank">RShiny Project Instruction</a>
-
-4. You can start to develop the web app in the shinyApp folder now.
-
-
-
-## Submit Your Work on Github
-Upon the completion of the RShiny app development, each team member should upload the team project folder to their individual github repo.
-
-Do not include the dataset, just put the dataset link in the README.md. 
-
-## Deploy Your Work on shinyapps.io
-
-1. Register an account at 
-   
-   https://www.shinyapps.io/
-2. Install [rsconnect](https://github.com/rstudio/rsconnect) in RStudio
-
-    `install.packages('rsconnect')`
-
-3. Go to your shinyapps.io dashboard and click on your username on the right top corner. 
-4. Then you will see a dropdown menu with three tabs, `profile`, `tokens`, and `logout`. Click on `tokens`, and you will see the token page. 
-5. `show` your token details, then `show` the secrect code (you may see a code chunk as below). Copy this rsconnect code to your Rstudio commend window. 
-    ```
-    rsconnect::setAccountInfo(name='<username>',
-			  token='<token>',
-			  secret='<secretCode>')
-    ```
-6. Deploy your local RShiny App
-   
-    `rsconnect::deployApp('yourAppDirectory')`
-
-One teammember makes one deployment on the behalf of the whole team.
-
-## Post Your Work Intro on Course Platform
-Finally, follow the project instruction and post a note with the all your members' github links, shinyapps.io demo page, and brief intro on the course platform. 
-
-One teammember makes one submission on the behalf of the whole team.
-
+Deployed R shiny app link: 
+https://seattleogawm.shinyapps.io/shinyapp/

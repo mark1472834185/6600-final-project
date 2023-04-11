@@ -1,63 +1,74 @@
-# server ----
-library(shiny)
-library(tidyverse)
-library(leaflet)
-library(dplyr)
-library(ggplot2)
 
 
-data <- read.csv()
 
 # Define the Shiny app server
-server1 <- function(input, output) {
+server <- function(input, output, session) {
+  source("www/functions/data_filter.R")
+  source("www/functions/barChart.R")
+  source("www/functions/pie.R")
+  source("www/functions/trendPlot.R")
+  source("www/functions/km.R")
   
-  # Create a reactive expression to filter data based on user inputs
-  filtered_data <- reactive({
-    df <- data
+  # imported dataset
+  data_final <- read_csv("https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/data/final_revised_data.csv")
+  
+  
+  
+  # create reactive variables
+  values <- reactiveValues(df = NULL,
+                           year = NULL,
+                           continent = NULL,
+                           capital = NULL,
+                           k = NULL)
+  
+  # observe Apply change button
+  observeEvent(input$applyChanges, {
+    # reassign the values
+    values$year <- input$yearRange
+    values$continent <- input$continent
+    values$capital <- input$capitalType
+    values$k <- input$k
     
-    # Filter data based on selected year range
-    df <- df %>%
-      filter(Year >= input$yearRange[1] & Year <= input$yearRange[2])
-    
-    # Filter data based on selected regions
-    if (!"Global" %in% input$Continent) {
-      df <- df %>%
-        filter(Region %in% input$Continent)
-    }
-    
-    # Filter data based on selected capital type
-    df <- df %>%
-      filter(`Capital type option` == input$capitalType)
-    
-    df
+    # Prepare the filtered data
+    values$df <- data_filter(data_final,values$year,values$continent,values$capital)
   })
   
-  # Create a histogram or bar chart based on the filtered data
-  output$histogram <- renderPlot({
-    # Wait for the user to click the "Apply Changes" button
-    input$applyChanges
+  
+  observe({
     
-    # Get the filtered data
-    df <- filtered_data()
+    # update barChart when reactive values changed
+    output$histogram <- renderPlot({ barChart(values$df,values$capital)})
     
-    # Aggregate data by country and sum the USD values
-    aggregated_data <- df %>%
-      group_by(`Country Name`) %>%
-      summarise(Total_USD = sum(`USD value`, na.rm = TRUE)) %>%
-      arrange(desc(Total_USD)) %>%
-      head(10)  # Get the top 10 countries
+    # update pie Chart when reactive values changed
+    output$piechart <- renderPlot({ pie(values$df,values$capital) }, bg = "transparent")
     
-    # Create a bar chart using ggplot2
-    p <- ggplot(aggregated_data, aes(x = reorder(`Country Name`, Total_USD), y = Total_USD)) +
-      geom_bar(stat = "identity", fill = "steelblue") +
-      theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      labs(x = "Country Name", y = "Total USD", title = "Top 10 Countries by Total USD")
+    # update trend Plot when reactive values changed
+    output$trendPlot <- renderPlotly({ trendPlot(values$df, values$capital) })
     
-    print(p)
+    # update kmeans clustering when reactive values changed
+    output$pca_cluster_plot <- renderPlotly({ km(values$df,values$k) })
   })
-
-
+  
+  
+  observeEvent(input$applyChanges, {
+    output$planetImage_trend <- renderUI({
+      if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+        div(style = "display: flex; justify-content: center;",
+            img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+        )
+      }
+    })
+  })
+  
+  observeEvent(input$applyChanges, {
+    output$planetImage_pca <- renderUI({
+      if (input$applyChanges > 0 && input$capitalType == "Natural capital") {
+        div(style = "display: flex; justify-content: center;",
+            img(src = "https://raw.githubusercontent.com/mark1472834185/6600-final-project/main/shinyApp/www/figures/planet.png")
+        )
+      }
+    })
+  })
   
   #Revise1 add interactive map into
   cities <- data.frame(
@@ -104,65 +115,5 @@ server1 <- function(input, output) {
         fitBounds(lng1 = -180, lat1 = -90, lng2 = 180, lat2 = 90)
     }
   })
-
   
-  # Observe the updates of the selected columns ----
-  observeEvent(input$observationInput1, {
-    # Save the selected column/s to values$plot.df ----
-    values$plot.df <-
-      as.data.frame(values$tbl[, input$observationInput1])
-    # Save column names ----
-    colnames(values$plot.df) <- input$observationInput1
-    
-    # TODO 
-    # Problem 3: You may insert an if else statement to control 
-    # if the BIN widget should be appeared
-    ## your code here ##
-    # P3 modify
-    if (is.numeric(values$plot.df[[1]])) {
-      output$binInput <- renderUI({
-        sliderInput(
-          inputId = "bins",
-          label = "Bins",
-          value = 10,
-          min = 1,
-          max = 50
-        )
-      })
-    } else {
-      output$binInput <- NULL
-    }
-    
-    # Render output data table ----
-    output$dataSet <- DT::renderDataTable({
-      values$tbl
-    },
-    # Default settings for DT::renderDataTable{()} ----
-    extensions = c('Scroller', 'FixedColumns'),
-    options = list(
-      deferRender = TRUE,
-      scrollX = TRUE,
-      scrollY = 200,
-      scroller = TRUE,
-      dom = 'Bfrtip',
-      fixedColumns = TRUE
-    ))
-
-  })
-  
-  
-  
-  # Widget RESET ----
-  # hint: set widget to NULL, then widget will disappear ----
-  observeEvent(input$reset, {
-    values$tbl <- NULL
-    output$obs1 <- NULL
-  })
-  
-  # Widget for DEBUG any specific values, default is the obs1 ----
-  # You may comment it up ----
-  output$aaa <- renderPrint({
-    values$obs1
-  })
 }
-
