@@ -123,7 +123,7 @@ ui1 <- fluidPage(
                  
         ),
               
-        tabPanel("PCA Cluster Analysis",
+        tabPanel("PCA K-means Clustering Analysis",
                  conditionalPanel(
                    condition = "input.applyChanges > 0",
                     p("The automatically generated PCA Cluster plot only respond to the change in year and continent information. Showing the relationship between

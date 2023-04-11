@@ -65,7 +65,7 @@ km <- function(df,k){
         titlefont = list(color = "white")
       ),
       title = list(
-        text = "PCA Cluster Analysis",
+        text = "PCA K-means Clustering with year and continent selected",
         font = list(color = "white")
       ),
       legend = list(
