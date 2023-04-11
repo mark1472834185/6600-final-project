@@ -44,6 +44,8 @@ km <- function(df,k){
                  hovertemplate = "Country: %{text}<br>Cluster: %{marker.symbol}",
                  showlegend = F) %>%
     layout(
+      plot_bgcolor = "rgba(0,0,0,0)",
+      paper_bgcolor = "rgba(0,0,0,0)",
       xaxis = list(
         title = "PC1",
         zerolinecolor = "white",
