@@ -116,7 +116,7 @@ ui1 <- fluidPage(
                    condition = "input.applyChanges > 0",
                    p("The generated Time-Series plot regarding the information on the side panel. Showing in detailed about the trend of each
                      country in the capital type selected and year range selected"),
-                   plotOutput("trendPlot")
+                   plotlyOutput("trendPlot")
                  ),
                  
                  uiOutput("planetImage_trend")
