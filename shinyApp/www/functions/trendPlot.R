@@ -33,7 +33,7 @@ trendPlot <- function(df,capital){
           legend.title = element_text(size = 16)) +
     labs(x = "Year", y = "Total USD", title = "Trend Analysis for Top 10 Countries")
 
-  return(p)
+  return(ggplotly(p))
 
 
 }
